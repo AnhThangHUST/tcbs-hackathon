@@ -1,20 +1,20 @@
 from sqlalchemy import BigInteger, Text, create_engine, Column
+from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import declarative_base, sessionmaker
 
 Base = declarative_base()
-
-# username = "postgres"
-# password = "1234"
-# dbname = "postgres"
-# engine = create_engine(
-#     'postgresql://postgres:1234@127.0.0.1:5432/postgres',
-#     echo=True
-# )
-
 engine = create_engine(
-    'postgresql://postgres:Hanoi2022@34.135.118.24:5432/crawler',
+    'postgresql://postgres:1234@127.0.0.1:5432/postgres',
     echo=True
 )
+
+# engine = create_engine('postgresql://postgres:Hanoi2022@34.135.118.24:5432/crawler',
+#                        connect_args={'connect_timeout': 30}, echo=True)
+try:
+    engine.connect()
+    print("success")
+except SQLAlchemyError as err:
+    raise RuntimeError('can not connect to database')
 
 session = sessionmaker(bind=engine)()
 page_size = 100
@@ -69,7 +69,6 @@ def getAllDocument():
         for r in query_res:
             res.append(Document(r))
     return res
-
 
 def createThesaurus():
     query_res = session.query(SynonymEntity).all()

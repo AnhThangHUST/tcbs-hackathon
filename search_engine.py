@@ -19,18 +19,21 @@ def embed_batch_text(batch_text):
 
 
 def indexAllDocuments():
+    index_name = "hackathon"
+    elasticsearch_client.indices.delete(index=index_name, ignore=[404])
     documents = document_repo.getAllDocument()
-    for document in enumerate(documents):
-        indexSentencesFromOneDocument(document)
+    for document in documents:
+        indexSentencesFromOneDocument(document, index_name)
+    print("indexing all documents done")
 
 
 # test index sentence
-def indexSentencesFromOneDocument(document):
-    raw_sentences = tokenizer.tokenize(".".join([document.title, document.body, document.description]))
+def indexSentencesFromOneDocument(document, index_name):
+    raw_sentences = tokenizer.tokenize(". ".join([document.title, document.body, document.description]))
     sentences = []
     for sentence in raw_sentences:
         sentence = datastructure_util.processSentence(sentence)
-        if len(sentence) == 0:
+        if len(sentence) == 0 or sentence.startswith("image"):
             continue
         sentences.append(sentence)
 
@@ -38,41 +41,51 @@ def indexSentencesFromOneDocument(document):
     content_vectors = embed_batch_text(sentences)
     for i, sentence in enumerate(sentences):
         request = {
-            'document_id': document.id,
-            'sentence': sentence,
-            'vector': content_vectors[i]
+            "_index": index_name,
+            "document_id": document.id,
+            "sentence": sentence,
+            "vector": content_vectors[i]
         }
         requests.append(request)
+
+    print("start bulk elastic search ", document.id)
     bulk(elasticsearch_client, requests)
+    print("bulk success ", document.id)
 
 
 # todo search per group
 def search(text):
     text_list = tokenizeText(text)
     text_vector_list = embed_batch_text(text_list)
-    searchMatchWholePhrase(text_list)
-    searchByCosineSimilarity(text_vector_list)
+    response = searchMatchWholePhrase(text_list)
+    # searchByCosineSimilarity(text_vector_list)
+    for hit in response["hits"]["hits"]:
+        print (hit["_source"]["document_id"])
+
 
 
 def tokenizeText(text):
-    text_list = []
-    text = str(tokenize(text))
+    text_list = [text]
     for word in document_repo.global_thesaurus.keys():
         if word in text:
             for synonym in document_repo[word]:
                 text_list.append(text.replace(word, synonym))
+
     return text_list
 
 
 def searchMatchWholePhrase(text_list):
-    script_query = {}
-    script_query["bool"]["should"] = []
+    script_query = {"bool": {"should": []}}
     for text in text_list:
         script_query["bool"]["should"].append({
-            "match_phrase": {
-                "sentence": text
+            "match": {
+                "sentence": {
+                    "query": text,
+                    "operator": "AND"
+                }
             }
         })
+
     return execSearch(script_query)
 
 
@@ -85,7 +98,7 @@ def searchByCosineSimilarity(text_vector_list):
             ,
             "script": {
                 "source": "cosineSimilarity(params.sentence_vector, 'sentence_vector') + 1.0",
-                "params": {"sentence_vector": text_vector}
+                "params": {"sentence_vector": text_vector_list}
             }
         }
     }
@@ -95,12 +108,12 @@ def searchByCosineSimilarity(text_vector_list):
 
 def execSearch(script_query):
     return elasticsearch_client.search(
-        index='demo_simcse',
+        index='hackathon',
         body={
             "size": 10,
             "query": script_query,
             "_source": {
-                "includes": ["id", "title"]
+                "includes": ["document_id", "sentence"]
             },
         },
         ignore=[400]
