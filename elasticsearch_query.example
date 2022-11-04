@@ -1,0 +1,45 @@
+{
+	"query": {
+		"bool": {
+			"should": [
+				{
+					"match": {
+						"sentence": {
+							"query": "Kết nối",
+							"operator": "AND"
+						}
+					}
+				},
+				{
+					"match": {
+						"sentence": {
+							"query": "Như vậy",
+							"operator": "AND"
+						}
+					}
+				}
+			]
+		}
+	},
+	"size": 10,
+	"from": 0,
+	"sort": [],
+	"aggs": {
+		"group_document_id": {
+			"terms": {
+				"field": "document_id",
+				"size": 1,
+				"order": {
+					"max_score": "desc"
+				}
+			},
+			"aggs": {
+				"max_score": {
+					"max": {
+						"field": "_score"
+					}
+				}
+			}
+		}
+	}
+}
