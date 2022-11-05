@@ -1,5 +1,6 @@
 from storage import session
 from storage.entity import DocumentEntity, SynonymEntity, HistoryEntity
+from datetime import date
 
 default_page_size = 100
 
@@ -34,11 +35,14 @@ def getAllSynonym():
 def insertHistory(dataDrawId, tcbsid):
     history = HistoryEntity(
         data_raw_id=dataDrawId,
-        tcbsid=tcbsid)
+        tcbsid=tcbsid,
+        create_date=date.today()
+    )
     session.add(history)
     session.commit()
 
 
 def getHistoryByTcbsId(tcbsid):
-    query_res = session.query(HistoryEntity).filter(HistoryEntity.tcbsid == tcbsid).all()
+    query_res = session.query(HistoryEntity).filter(HistoryEntity.tcbsid == tcbsid)\
+        .order_by(HistoryEntity.create_date.desc()).all()
     return query_res
