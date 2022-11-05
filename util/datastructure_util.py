@@ -9,21 +9,24 @@ def serializeList(l):
     return json.dumps(l, default=lambda o: o.__dict__, indent=4)
 
 
-def processSentence(word):
-    l = len(word)
+def processSentence(sentence):
+    sentence = sentence.lower().repace("\n", " ")
+    sentence = " ".join(sentence.split())
+    l = len(sentence)
     i = 0
     while i < l:
-        if word[i] == ' ' or word[i] in special_characters:
+        if sentence[i] == ' ' or sentence[i] in special_characters:
             i += 1
         else:
             break
-    word = word[i:]
-    l = len(word)
+    sentence = sentence[i:]
+    l = len(sentence)
     i = l - 1
     while i >= 0:
-        if word[i] == ' ' or word[i] in special_characters:
+        if sentence[i] == ' ' or sentence[i] in special_characters:
             i -= 1
         else:
             break
-    word = word[:i + 1]
-    return word
+    sentence = sentence[:i + 1]
+
+    return sentence
