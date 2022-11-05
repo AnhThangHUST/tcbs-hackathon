@@ -6,7 +6,7 @@ default_page_size = 100
 
 
 def getAllDocument():
-    res = session.query(DocumentEntity).filter(DocumentEntity.source_type == "tcinvest").all()
+    res = session.query(DocumentEntity).all()
     # page_index = 0
     #
     # move_next = True

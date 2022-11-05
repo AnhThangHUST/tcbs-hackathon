@@ -21,6 +21,7 @@ class DocumentDataResponse:
         self.isOpenNewTab = True
         self.roles = []
         self.icon = ""
+        self.type = ""
 
     def __repr__(self):
         return json.dumps(self.__dict__)

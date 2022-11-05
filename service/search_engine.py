@@ -42,7 +42,10 @@ def search(term, tcbsId):
                     searchResponse.data[i].roles = detail_cfg.get("roles")
                     searchResponse.data[i].viewType = detail_cfg.get("viewType")
                     searchResponse.data[i].description = detail_cfg.get("description")
-        res.append({"source": source, "data": searchResponse.data})
+                    searchResponse.data[i].type = detail_cfg.get("type")
+            res.insert(0, {"source": source, "data": searchResponse.data})
+        else:
+            res.append({"source": source, "data": searchResponse.data})
     return res
 
 
@@ -113,7 +116,8 @@ def searchByCosineSimilarity(text_vector_list):
         response = execSearch(script_query)
         m[cs] = []
         for hit in response["hits"]["hits"]:
-            m[cs].append(hit["_source"]["document_id"])
+            if hit["_score"] >= 1.6:
+                m[cs].append(hit["_source"]["document_id"])
         m[cs] = list(set(m[cs]))
 
     return m
