@@ -1,9 +1,14 @@
 from service import embed_batch_text, global_thesaurus, elasticsearch_client, document_crud
 from service.model import SearchResponse
+from config import tcinvest_config_indexed_by_url
 
 
-def search(text):
-    text_list = tokenizeText(text)
+def search(term):
+    if term is None:
+        return ["Cuong implement here"]
+
+    print("start search with term ", term)
+    text_list = tokenizeText(term)
     text_vector_list = embed_batch_text(text_list)
     response = searchMatchWholePhrase(text_list)
     # searchByCosineSimilarity(text_vector_list)
@@ -11,7 +16,19 @@ def search(text):
     for hit in response["hits"]["hits"]:
         document_ids.append(hit["_source"]["document_id"])
 
-    return [SearchResponse(d) for d in document_crud.getDocumentWhereIdIn(document_ids)]
+    res = []
+    for d in document_crud.getDocumentWhereIdIn(document_ids):
+        searchResponse = SearchResponse(d)
+        if d.source_type == 'tcinvest':
+            if d.url in tcinvest_config_indexed_by_url:
+                detail_cfg = tcinvest_config_indexed_by_url[d.url]
+                searchResponse.data.title = detail_cfg["title"]
+                searchResponse.data.icon = detail_cfg["icon"]
+                searchResponse.data.routingUrl = detail_cfg["routingUrl"]
+                searchResponse.data.roles = detail_cfg["roles"]
+                searchResponse.data.viewType = detail_cfg["viewType"]
+                searchResponse.data.description = detail_cfg["description"]
+    return res
 
 
 def tokenizeText(text):

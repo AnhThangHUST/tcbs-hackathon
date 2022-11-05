@@ -619,6 +619,16 @@ tcinvest_function_config = {
         "routingUrl": "/risk-profiling",
         "roles": ["customer"],
         "type": "appconfig.other",
-        "description": "appconfig.customer.riskProfilingDdescription"
+        "description": "appconfig.customer.riskProfilingDescription"
     }
 }
+
+
+print("start index tcinvest config by url")
+tcinvest_config_indexed_by_url = {}
+for feature, data in tcinvest_function_config.items():
+    fullUrl = "https://tcinvest.tcbs.com.vn" + data["routingUrl"]
+    data["feature"] = feature
+    tcinvest_config_indexed_by_url[fullUrl] = data
+
+print("tcinvest config indexed done")
