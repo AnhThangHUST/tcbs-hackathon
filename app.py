@@ -5,9 +5,6 @@ from flask import Flask, request
 from service import document_crud, search_engine
 from util import datastructure_util
 
-# context = SSL.Context(SSL.TLSv1_2_METHOD)
-# context.use_privatekey_file('test-ssl.local.key')
-# context.use_certificate_file('test-ssl.local.crt')
 context = ('test-ssl.local.crt', 'test-ssl.local.key')
 
 server = Flask(__name__)
