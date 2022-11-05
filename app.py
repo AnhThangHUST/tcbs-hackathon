@@ -26,7 +26,8 @@ def indexData():
 
 @server.route('/search')
 def search():
-    response = search_engine.search("Kết nối")
+    term = request.args.get("term")
+    response = search_engine.search(term)
     return json.loads(datastructure_util.serializeList(response))
 
 

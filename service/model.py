@@ -15,7 +15,11 @@ class DocumentDataResponse:
     def __init__(self, document):
         self.title = document.title
         self.description = document.description
-        self.link = document.url
+        self.routingUrl = document.url
+        self.viewType = ""
+        self.isOpenNewTab = True
+        self.roles = []
+        self.icon = ""
 
     def __repr__(self):
         return json.dumps(self.__dict__)
