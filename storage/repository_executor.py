@@ -1,5 +1,5 @@
 from storage import session
-from storage.entity import DocumentEntity, SynonymEntity
+from storage.entity import DocumentEntity, SynonymEntity, HistoryEntity
 
 default_page_size = 100
 
@@ -29,3 +29,16 @@ def getDocumentWhereIdIn(ids):
 
 def getAllSynonym():
     return session.query(SynonymEntity).all()
+
+
+def insertHistory(dataDrawId, tcbsid):
+    history = HistoryEntity(
+        data_raw_id=dataDrawId,
+        tcbsid=tcbsid)
+    session.add(history)
+    session.commit()
+
+
+def getHistoryByTcbsId(tcbsid):
+    query_res = session.query(HistoryEntity).where(HistoryEntity.tcbsid.is_(tcbsid)).all()
+    return query_res

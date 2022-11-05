@@ -1,3 +1,5 @@
+from datetime import date
+
 from sqlalchemy import BigInteger, Column, Text
 from sqlalchemy.orm import declarative_base
 
@@ -21,3 +23,12 @@ class SynonymEntity(Base):
     id = Column(BigInteger, primary_key=True)
     word = Column(Text)
     synonym = Column(Text)
+
+
+class HistoryEntity(Base):
+    __tablename__ = 'history'
+
+    id = Column(BigInteger, primary_key=True)
+    data_raw_id = Column(BigInteger)
+    tcbsid = Column(Text)
+    create_date = Column(date)

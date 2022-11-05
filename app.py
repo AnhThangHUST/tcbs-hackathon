@@ -1,8 +1,8 @@
 import json
 
-from flask import Flask
+from flask import Flask, app, request
 
-from service import document_crud, search_engine
+from service import document_crud, search_engine, history
 from util import datastructure_util
 
 server = Flask(__name__)
@@ -28,6 +28,20 @@ def indexData():
 def search():
     response = search_engine.search("Kết nối")
     return json.loads(datastructure_util.serializeList(response))
+
+
+@app.route('/history/<string:tcbsid>', methods=['GET'])
+def getHistoryByTcbsId(tcbsid):
+    response = history.getHistotyOfTcbsId(tcbsid)
+    return json.loads(datastructure_util.serializeList(response))
+
+
+@app.route('/history', methods=['POST'])
+def insertTcbsId():
+    tcbsid = request.args.get('tcbsid')
+    drawDataId = request.args.get('drawDataId')
+    response = history.insertHistory(drawDataId, tcbsid)
+    return datastructure_util.serializeList(response)
 
 
 if __name__ == '__main__':
