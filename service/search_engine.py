@@ -3,31 +3,33 @@ from service.model import SearchResponse
 from config import tcinvest_config_indexed_by_url
 
 
-def search(term):
+def search(term, tcbsId):
     if term is None:
-        return ["Cuong implement here"]
+        documents = document_crud.getHistotyOfTcbsId(tcbsId)
+    else:
+        print("start search with term ", term)
+        text_list = tokenizeText(term)
+        text_vector_list = embed_batch_text(text_list)
+        response = searchMatchWholePhrase(text_list)
+        # searchByCosineSimilarity(text_vector_list)
+        document_ids = []
+        for hit in response["hits"]["hits"]:
+            document_ids.append(hit["_source"]["document_id"])
 
-    print("start search with term ", term)
-    text_list = tokenizeText(term)
-    text_vector_list = embed_batch_text(text_list)
-    response = searchMatchWholePhrase(text_list)
-    # searchByCosineSimilarity(text_vector_list)
-    document_ids = []
-    for hit in response["hits"]["hits"]:
-        document_ids.append(hit["_source"]["document_id"])
-
+        documents = document_crud.getDocumentWhereIdIn(document_ids)
     res = []
-    for d in document_crud.getDocumentWhereIdIn(document_ids):
+    for d in documents:
         searchResponse = SearchResponse(d)
         if d.source_type == 'tcinvest':
             if d.url in tcinvest_config_indexed_by_url:
                 detail_cfg = tcinvest_config_indexed_by_url[d.url]
-                searchResponse.data.title = detail_cfg["title"]
-                searchResponse.data.icon = detail_cfg["icon"]
-                searchResponse.data.routingUrl = detail_cfg["routingUrl"]
-                searchResponse.data.roles = detail_cfg["roles"]
-                searchResponse.data.viewType = detail_cfg["viewType"]
-                searchResponse.data.description = detail_cfg["description"]
+                searchResponse.data.title = detail_cfg.get("title")
+                searchResponse.data.icon = detail_cfg.get("icon")
+                searchResponse.data.routingUrl = detail_cfg.get("routingUrl")
+                searchResponse.data.roles = detail_cfg.get("roles")
+                searchResponse.data.viewType = detail_cfg.get("viewType")
+                searchResponse.data.description = detail_cfg.get("description")
+        res.append(searchResponse)
     return res
 
 
