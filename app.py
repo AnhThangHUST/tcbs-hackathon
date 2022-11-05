@@ -1,7 +1,6 @@
 from flask import Flask
 
-import document_repo
-import search_engine
+from service import document_crud, search_engine
 from util import datastructure_util
 
 server = Flask(__name__)
@@ -14,14 +13,12 @@ def helloWorld():
 
 @server.route('/test-db')
 def testDb():
-    search_engine.indexAllDocuments()
-    return datastructure_util.serializeList(document_repo.getAllDocument())
-    # return search_engine.search("đầu tư")
+    return datastructure_util.serializeList(document_crud.getDocumentWithPagination(0, 10))
 
 
 @server.route('/index-data')
 def indexData():
-    search_engine.indexAllDocuments()
+    document_crud.indexAllDocuments()
     return "index data done"
 
 
