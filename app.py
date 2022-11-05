@@ -1,9 +1,14 @@
 import json
 
-from flask import Flask, app, request
+from flask import Flask, request
 
 from service import document_crud, search_engine
 from util import datastructure_util
+
+# context = SSL.Context(SSL.TLSv1_2_METHOD)
+# context.use_privatekey_file('test-ssl.local.key')
+# context.use_certificate_file('test-ssl.local.crt')
+context = ('test-ssl.local.crt', 'test-ssl.local.key')
 
 server = Flask(__name__)
 
@@ -18,7 +23,7 @@ def testDb():
     return datastructure_util.serializeList(document_crud.getDocumentWithPagination(0, 10))
 
 
-@server.route('/index-data')
+@server.route('/index-data', methods=['POST'])
 def indexData():
     document_crud.indexAllDocuments()
     return "index data done"
@@ -35,7 +40,7 @@ def search():
 @server.route('/history', methods=['GET'])
 def getHistoryByTcbsId():
     tcbsid = request.args.get('tcbsid')
-    response = document_crud.getHistotyOfTcbsId(tcbsid)
+    response = document_crud.getHistoryOfTcbsId(tcbsid)
     return json.loads(datastructure_util.serializeList(response))
 
 
@@ -48,5 +53,5 @@ def insertTcbsId():
 
 
 if __name__ == '__main__':
-    # server.run(host='100.102.12.25', port=8888, ssl_context='adhoc')
+    # server.run(host='100.102.12.25', port=8888, ssl_context="adhoc")
     server.run(host='100.102.12.25', port=8888, debug=True)

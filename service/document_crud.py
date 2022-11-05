@@ -16,7 +16,7 @@ def getDocumentWhereIdIn(ids):
     return [Document(q) for q in query_res]
 
 
-def getHistotyOfTcbsId(tcbsid):
+def getHistoryOfTcbsId(tcbsid):
     query_res = repository_executor.getHistoryByTcbsId(tcbsid)
     idsDataRow = []
     for r in query_res:
@@ -32,16 +32,18 @@ def insertHistory(drawDataId, tcbsid):
 def indexAllDocuments():
     index_name = "hackathon"
     elasticsearch_client.indices.delete(index=index_name, ignore=[404])
+    with open("config/index.json") as index_file:
+        source = index_file.read().strip()
+        elasticsearch_client.indices.create(index=index_name, body=source)
     entities = repository_executor.getAllDocument()
     for entity in entities:
         document = Document(entity)
         indexSentencesFromOneDocument(document, index_name)
-    print("indexing all documents done")
 
 
 # test index sentence
 def indexSentencesFromOneDocument(document, index_name):
-    raw_sentences = tokenizer.tokenize(". ".join([document.title, document.body, document.description]))
+    raw_sentences = tokenizer.tokenize(". ".join([str(document.title), str(document.body), str(document.description)]))
     sentences = []
     for sentence in raw_sentences:
         sentence = datastructure_util.processSentence(sentence)
@@ -56,10 +58,13 @@ def indexSentencesFromOneDocument(document, index_name):
             "_index": index_name,
             "document_id": document.id,
             "sentence": sentence,
-            "vector": content_vectors[i]
+            "source": document.source_type,
+            "sentence_vector": content_vectors[i]
         }
         requests.append(request)
 
     print("start bulk elastic search ", document.id)
     bulk(elasticsearch_client, requests)
     print("bulk success ", document.id)
+
+    return requests

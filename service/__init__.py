@@ -10,7 +10,6 @@ nltk.data.path.append("/home/thangna/hackathon/nltk_data")
 tokenizer = nltk.data.load('tokenizers/punkt/PY3/english.pickle')
 global_thesaurus = createThesaurus()
 
-
 def embed_batch_text(batch_text):
     batch_embedding = model_embedding.encode(batch_text)
     return [vector.tolist() for vector in batch_embedding]

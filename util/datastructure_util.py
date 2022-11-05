@@ -10,7 +10,7 @@ def serializeList(l):
 
 
 def processSentence(sentence):
-    sentence = sentence.lower().repace("\n", " ")
+    sentence = sentence.lower().replace("\n", " ")
     sentence = " ".join(sentence.split())
     l = len(sentence)
     i = 0

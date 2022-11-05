@@ -26,6 +26,6 @@ class DocumentDataResponse:
 
 
 class SearchResponse:
-    def __init__(self, document):
-        self.source = document.source_type
-        self.data = DocumentDataResponse(document)
+    def __init__(self, source, documents):
+        self.source = source
+        self.data = [DocumentDataResponse(document) for document in documents]
