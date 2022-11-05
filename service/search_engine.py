@@ -34,6 +34,7 @@ def search(term, tcbsId):
 
 
 def tokenizeText(text):
+    text = " ".join(text.lower().split())
     text_list = [text]
     for word in global_thesaurus.keys():
         if word in text:
