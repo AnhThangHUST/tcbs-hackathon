@@ -21,7 +21,14 @@ def getHistotyOfTcbsId(tcbsid):
     idsDataRow = []
     for r in query_res:
         idsDataRow.append(r.data_raw_id)
-    return getDocumentWhereIdIn(idsDataRow)
+    document = getDocumentWhereIdIn(idsDataRow)
+
+    filteredIWC = filter(lambda data: data.source_type == 'iwealth_club', document)
+    filteredTCIV = filter(lambda data: data.source_type == 'tcinvest', document)
+    filteredTCBS = filter(lambda data: data.source_type == 'tcbs', document)
+
+    result = [filteredIWC[0:5], filteredTCIV[0:5]], filteredTCBS[0:5]
+    return result
 
 
 def insertHistory(drawDataId, tcbsid):

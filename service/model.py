@@ -13,6 +13,7 @@ class Document:
 
 class DocumentDataResponse:
     def __init__(self, document):
+        self.id = document.id
         self.title = document.title
         self.description = document.description
         self.routingUrl = document.url
