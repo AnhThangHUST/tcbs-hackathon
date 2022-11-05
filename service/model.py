@@ -4,7 +4,7 @@ import json
 class Document:
     def __init__(self, documentEntity):
         self.id = documentEntity.id
-        self.url = documentEntity.body
+        self.url = documentEntity.url
         self.title = documentEntity.title
         self.description = documentEntity.description
         self.body = documentEntity.body

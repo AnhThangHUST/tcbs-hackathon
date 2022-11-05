@@ -16,6 +16,19 @@ def getDocumentWhereIdIn(ids):
     return [Document(q) for q in query_res]
 
 
+def getHistotyOfTcbsId(tcbsid):
+    query_res = repository_executor.getHistoryByTcbsId(tcbsid)
+    idsDataRow = []
+    for r in query_res:
+        idsDataRow.append(r.data_raw_id)
+    return getDocumentWhereIdIn(idsDataRow)
+
+
+def insertHistory(drawDataId, tcbsid):
+    repository_executor.insertHistory(drawDataId, tcbsid)
+    return "ok"
+
+
 def indexAllDocuments():
     index_name = "hackathon"
     elasticsearch_client.indices.delete(index=index_name, ignore=[404])

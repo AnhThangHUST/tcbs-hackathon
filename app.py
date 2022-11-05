@@ -2,7 +2,7 @@ import json
 
 from flask import Flask, app, request
 
-from service import document_crud, search_engine, history
+from service import document_crud, search_engine
 from util import datastructure_util
 
 server = Flask(__name__)
@@ -27,14 +27,15 @@ def indexData():
 @server.route('/search')
 def search():
     term = request.args.get("term")
-    response = search_engine.search(term)
+    tcbsId = request.args.get("tcbsId")
+    response = search_engine.search(term, tcbsId)
     return json.loads(datastructure_util.serializeList(response))
 
 
 @server.route('/history', methods=['GET'])
 def getHistoryByTcbsId():
     tcbsid = request.args.get('tcbsid')
-    response = history.getHistotyOfTcbsId(tcbsid)
+    response = document_crud.getHistotyOfTcbsId(tcbsid)
     return json.loads(datastructure_util.serializeList(response))
 
 
@@ -42,7 +43,7 @@ def getHistoryByTcbsId():
 def insertTcbsId():
     tcbsid = request.args.get('tcbsid')
     drawDataId = request.args.get('drawDataId')
-    response = history.insertHistory(drawDataId, tcbsid)
+    response = document_crud.insertHistory(drawDataId, tcbsid)
     return datastructure_util.serializeList(response)
 
 

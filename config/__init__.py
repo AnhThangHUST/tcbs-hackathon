@@ -81,7 +81,7 @@ tcinvest_function_config = {
         "icon": "nhandiennhucauKH",
         "routingUrl": "/salescripts",
         "roles": ["rm", "rbo"],
-        "viewtype": "widget",
+        "viewType": "widget",
         "type": "appconfig.bond",
     },
     "ICONNECT_CONDITION_PLACING": {
@@ -90,7 +90,7 @@ tcinvest_function_config = {
         "icon": "dat_lenh_trai_phieu",
         "routingUrl": "ICONNECT_CONDITION",
         "roles": ["customer"],
-        "viewtype": "popup",
+        "viewType": "popup",
         "type": "appconfig.bond",
         "description": "menu.bond.iconnect"
     },
@@ -100,7 +100,7 @@ tcinvest_function_config = {
         "icon": "dat_lenh_trai_phieu",
         "routingUrl": "ICONNECT_CONDITION",
         "roles": ["rm", "wp", "rbo"],
-        "viewtype": "popup",
+        "viewType": "popup",
         "type": "appconfig.bond",
     },
     "FUND_ORDER": {
@@ -257,7 +257,7 @@ tcinvest_function_config = {
         "icon": "dat_lenh_co_phieu",
         "routingUrl": "MULTI",
         "roles": ["customer"],
-        "viewtype": "popup",
+        "viewType": "popup",
         "type": "appconfig.stock",
         "description": "menu.stock.condition"
     },
@@ -267,7 +267,7 @@ tcinvest_function_config = {
         "icon": "dat_lenh_co_phieu",
         "routingUrl": "247",
         "roles": ["customer"],
-        "viewtype": "popup",
+        "viewType": "popup",
         "type": "appconfig.stock",
     },
     "BACK_TEST": {
@@ -276,7 +276,7 @@ tcinvest_function_config = {
         "icon": "BACK_TEST",
         "routingUrl": "BACK_TEST",
         "roles": ["customer"],
-        "viewtype": "popup",
+        "viewType": "popup",
         "type": "appconfig.stock",
         "isUtilityMenu": True,
         "description": "menu.utils.backtest"
@@ -287,7 +287,7 @@ tcinvest_function_config = {
         "icon": "DYNAMIC_WATCH_LIST",
         "routingUrl": "DYNAMIC_WATCH_LIST",
         "roles": ["customer"],
-        "viewtype": "popup",
+        "viewType": "popup",
         "type": "appconfig.stock",
         "isUtilityMenu": True,
         "description": "menu.utils.dynamicW"
