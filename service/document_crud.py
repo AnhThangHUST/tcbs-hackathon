@@ -23,11 +23,11 @@ def getHistotyOfTcbsId(tcbsid):
         idsDataRow.append(r.data_raw_id)
     document = getDocumentWhereIdIn(idsDataRow)
 
-    filteredIWC = filter(lambda data: data.source_type == 'iwealth_club', document)
-    filteredTCIV = filter(lambda data: data.source_type == 'tcinvest', document)
-    filteredTCBS = filter(lambda data: data.source_type == 'tcbs', document)
+    filteredIWC = list(filter(lambda data: data.source_type == 'iwealth_club', document))
+    filteredTCIV = list(filter(lambda data: data.source_type == 'tcinvest', document))
+    filteredTCBS = list(filter(lambda data: data.source_type == 'tcbs', document))
 
-    result = [filteredIWC[0:5], filteredTCIV[0:5]], filteredTCBS[0:5]
+    result = filteredIWC[:5] + filteredTCIV[:5] + filteredTCBS[:5]
     return result
 
 
