@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask
 
 from service import document_crud, search_engine
@@ -25,7 +27,7 @@ def indexData():
 @server.route('/search')
 def search():
     response = search_engine.search("Kết nối")
-    return datastructure_util.serializeList(response)
+    return json.loads(datastructure_util.serializeList(response))
 
 
 if __name__ == '__main__':

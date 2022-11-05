@@ -2,13 +2,6 @@ import json
 
 
 class Document:
-    id = 0
-    url = ""
-    title = ""
-    description = ""
-    body = ""
-    source_type = ""
-
     def __init__(self, documentEntity):
         self.id = documentEntity.id
         self.url = documentEntity.body

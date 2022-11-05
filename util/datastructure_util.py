@@ -6,7 +6,7 @@ special_characters = set(punctuation)
 
 
 def serializeList(l):
-    return json.dumps([ob.__dict__ for ob in l])
+    return json.dumps(l, default=lambda o: o.__dict__, indent=4)
 
 
 def processSentence(word):
