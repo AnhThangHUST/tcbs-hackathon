@@ -48,4 +48,4 @@ def insertTcbsId():
 
 
 if __name__ == '__main__':
-    server.run(host='127.0.0.1', port=8888, debug=True)
+    server.run(host='127.0.0.1', port=8888, debug=True, ssl_context='adhoc')
