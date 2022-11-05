@@ -88,20 +88,11 @@ tcinvest_function_config = {
         # Đặt lệnh điều kiện iconnect
         "title": "bond.condition.menu.left",
         "icon": "dat_lenh_trai_phieu",
-        "routingUrl": "ICONNECT_CONDITION",
+        "routingUrl": "/ICONNECT_CONDITION",
         "roles": ["customer"],
         "viewType": "popup",
         "type": "appconfig.bond",
         "description": "menu.bond.iconnect"
-    },
-    "ICONNECT_RM_CONDITION_PLACING": {
-        # Giới thiệu lệnh kiện iconnect
-        "title": "bond.condition.menu.left.rm",
-        "icon": "dat_lenh_trai_phieu",
-        "routingUrl": "ICONNECT_CONDITION",
-        "roles": ["rm", "wp", "rbo"],
-        "viewType": "popup",
-        "type": "appconfig.bond",
     },
     "FUND_ORDER": {
         # Đặt lệnh quỹ
@@ -627,7 +618,7 @@ tcinvest_function_config = {
 print("start index tcinvest config by url")
 tcinvest_config_indexed_by_url = {}
 for feature, data in tcinvest_function_config.items():
-    fullUrl = "https://tcinvest.tcbs.com.vn" + data["routingUrl"]
+    fullUrl = "https://tcinvest.tcbs.com.vn" + data.get("routingUrl")
     data["feature"] = feature
     tcinvest_config_indexed_by_url[fullUrl] = data
 
