@@ -23,7 +23,7 @@ def search(term, tcbsId):
         if d.source_type == 'tcinvest':
             if d.url in tcinvest_config_indexed_by_url:
                 detail_cfg = tcinvest_config_indexed_by_url[d.url]
-                searchResponse.data.
+                searchResponse.data.id = detail_cfg.get("id")
                 searchResponse.data.title = detail_cfg.get("title")
                 searchResponse.data.icon = detail_cfg.get("icon")
                 searchResponse.data.routingUrl = detail_cfg.get("routingUrl")
