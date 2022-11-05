@@ -11,6 +11,11 @@ def getDocumentWithPagination(page_index, page_size):
     return [Document(q) for q in query_res]
 
 
+def getDocumentWhereIdIn(ids):
+    query_res = repository_executor.getDocumentWhereIdIn(ids)
+    return [Document(q) for q in query_res]
+
+
 def indexAllDocuments():
     index_name = "hackathon"
     elasticsearch_client.indices.delete(index=index_name, ignore=[404])

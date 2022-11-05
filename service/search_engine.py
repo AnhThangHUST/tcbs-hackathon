@@ -1,4 +1,4 @@
-from service import embed_batch_text, global_thesaurus, elasticsearch_client
+from service import embed_batch_text, global_thesaurus, elasticsearch_client, document_crud
 
 
 def search(text):
@@ -6,8 +6,11 @@ def search(text):
     text_vector_list = embed_batch_text(text_list)
     response = searchMatchWholePhrase(text_list)
     # searchByCosineSimilarity(text_vector_list)
+    document_ids = []
     for hit in response["hits"]["hits"]:
-        print(hit["_source"]["document_id"])
+        document_ids.append(hit["_source"]["document_id"])
+
+    return document_crud.getDocumentWhereIdIn(document_ids)
 
 
 def tokenizeText(text):

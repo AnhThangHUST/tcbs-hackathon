@@ -22,5 +22,10 @@ def getDocumentWithPagination(page_index, page_size):
     return query_res
 
 
+def getDocumentWhereIdIn(ids):
+    query_res = session.query(DocumentEntity).where(DocumentEntity.id.in_(ids)).all()
+    return query_res
+
+
 def getAllSynonym():
     return session.query(SynonymEntity).all()
