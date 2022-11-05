@@ -40,5 +40,5 @@ def insertHistory(dataDrawId, tcbsid):
 
 
 def getHistoryByTcbsId(tcbsid):
-    query_res = session.query(HistoryEntity).where(HistoryEntity.tcbsid.is_(tcbsid)).all()
+    query_res = session.query(HistoryEntity).filter(HistoryEntity.tcbsid == tcbsid).all()
     return query_res

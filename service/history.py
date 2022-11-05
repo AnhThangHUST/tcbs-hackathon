@@ -8,8 +8,7 @@ def getHistotyOfTcbsId(tcbsid):
     query_res = repository_executor.getHistoryByTcbsId(tcbsid)
     idsDataRow = []
     for r in query_res:
-        history = HistoryEntity(r)
-        idsDataRow.append(history.data_raw_id)
+        idsDataRow.append(r.data_raw_id)
     return [SearchResponse(d) for d in document_crud.getDocumentWhereIdIn(idsDataRow)]
 
 

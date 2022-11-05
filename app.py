@@ -31,13 +31,14 @@ def search():
     return json.loads(datastructure_util.serializeList(response))
 
 
-@app.route('/history/<string:tcbsid>', methods=['GET'])
-def getHistoryByTcbsId(tcbsid):
+@server.route('/history', methods=['GET'])
+def getHistoryByTcbsId():
+    tcbsid = request.args.get('tcbsid')
     response = history.getHistotyOfTcbsId(tcbsid)
     return json.loads(datastructure_util.serializeList(response))
 
 
-@app.route('/history', methods=['POST'])
+@server.route('/history', methods=['POST'])
 def insertTcbsId():
     tcbsid = request.args.get('tcbsid')
     drawDataId = request.args.get('drawDataId')

@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import BigInteger, Column, Text
+from sqlalchemy import BigInteger, Column, Text, Date
 from sqlalchemy.orm import declarative_base
 
 Base = declarative_base()
@@ -31,4 +31,4 @@ class HistoryEntity(Base):
     id = Column(BigInteger, primary_key=True)
     data_raw_id = Column(BigInteger)
     tcbsid = Column(Text)
-    create_date = Column(date)
+    create_date = Column(Date)
