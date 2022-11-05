@@ -1,4 +1,5 @@
 from service import embed_batch_text, global_thesaurus, elasticsearch_client, document_crud
+from service.model import SearchResponse
 
 
 def search(text):
@@ -10,7 +11,7 @@ def search(text):
     for hit in response["hits"]["hits"]:
         document_ids.append(hit["_source"]["document_id"])
 
-    return document_crud.getDocumentWhereIdIn(document_ids)
+    return [SearchResponse(d) for d in document_crud.getDocumentWhereIdIn(document_ids)]
 
 
 def tokenizeText(text):
